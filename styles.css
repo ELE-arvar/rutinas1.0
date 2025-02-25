@@ -93,7 +93,7 @@ table {
 th, td {
   border: 1px solid #ddd;
   padding: 10px;
-  text-align: center;
+  text-align: left;
 }
 tr.completed {
   background-color: #d4edda;
