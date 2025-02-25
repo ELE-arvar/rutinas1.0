@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Rutinas, Seguimiento y Calendario</title>
-  <!-- Enlazamos el archivo CSS -->
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -20,42 +19,50 @@
       <button class="tab-button" data-tab="calendarioAnual">Calendario Anual</button>
       <button class="tab-button" data-tab="modificar">Modificar Rutina</button>
     </div>
+    
     <!-- Tab: Plan Diario -->
     <div id="planDiario" class="tab-content active">
       <h2>Plan Diario</h2>
-      <section>
-        <h3>Días con Clases (Lunes a Viernes)</h3>
-        <ul>
-          <li><strong>Mañana Temprano (Inicio del Turno a las 06:00 am):</strong> Inicio del trabajo, estiramientos, desayuno nutritivo y planificación del día.</li>
-          <li><strong>Bloque de Clases (8:00 – 11:00 am):</strong> Asistencia a clases y snack ligero (fruta o barra de cereal).</li>
-          <li><strong>Transición (11:00 – 12:00 pm):</strong> Breve pausa y merienda para recargar energías.</li>
-          <li><strong>Continuación del Turno (Desde las 12:00 pm en adelante):</strong> Organización en bloques (ej. técnica Pomodoro) y pausas activas.</li>
-          <li><strong>Final del Turno y Recuperación:</strong> Rutina de desconexión y ambiente adecuado para un sueño reparador.</li>
-        </ul>
-      </section>
-      <section>
-        <h3>Días sin Clases (Sábado/Domingo)</h3>
-        <ul>
-          <li><strong>Mañana Temprano:</strong> Inicio del turno a las 06:00 am con activación y desayuno saludable. Opción de ejercicio corto (15–20 minutos).</li>
-          <li><strong>Jornada Laboral:</strong> Organización en bloques con pausas activas y descansos programados.</li>
-          <li><strong>Alimentación y Descansos:</strong> Snacks y comidas pre-preparadas para mantener la energía.</li>
-          <li><strong>Final del Turno y Recuperación:</strong> Rutina de desconexión similar a la de los días con clases.</li>
-        </ul>
-      </section>
-      <section>
-        <h3>Aspectos Transversales</h3>
-        <ul>
-          <li><strong>Alimentación:</strong> Meal prep en días de descanso para garantizar opciones saludables.</li>
-          <li><strong>Ejercicio:</strong> Pausas activas en días de trabajo y sesiones más completas en días sin clases.</li>
-          <li><strong>Sueño y Recuperación:</strong> Rutina constante de sueño y ambiente propicio para descansar.</li>
-          <li><strong>Gestión del Tiempo:</strong> Uso de agenda o apps para organizar bloques de trabajo, clases y tiempo personal.</li>
-        </ul>
-      </section>
+      
+      <!-- Sección desplegable para Días con Clases -->
+      <details>
+        <summary><strong>Días con Clases (Lunes a Viernes)</strong></summary>
+        <div class="details-content">
+          <p><strong>Mañana Temprano (06:00 am):</strong> Inicio del trabajo, estiramientos, desayuno y planificación. Se recomienda realizar ejercicios de activación para despertar el cuerpo y la mente.</p>
+          <p><strong>Clases (8:00–11:00 am):</strong> Asistencia a clases y consumo de un snack ligero (por ejemplo, fruta o frutos secos) para mantener la energía.</p>
+          <p><strong>Transición (11:00–12:00 pm):</strong> Pausa breve y merienda para recargar energías. Es recomendable desconectar momentáneamente antes de retomar el trabajo.</p>
+          <p><strong>Turno (Desde 12:00 pm):</strong> Organización en bloques de tiempo (ej. Técnica Pomodoro) y realización de pausas activas para evitar la fatiga.</p>
+          <p><strong>Final y Recuperación:</strong> Desconexión del trabajo, preparación de un ambiente relajado y actividades de relajación (leer, meditar) para lograr un sueño reparador.</p>
+        </div>
+      </details>
+      
+      <!-- Sección desplegable para Días sin Clases -->
+      <details>
+        <summary><strong>Días sin Clases (Sábado/Domingo)</strong></summary>
+        <div class="details-content">
+          <p><strong>Mañana:</strong> Inicio con activación, un desayuno completo y, si es posible, una sesión corta de ejercicio (15–20 minutos).</p>
+          <p><strong>Jornada:</strong> Organización del día en bloques para dedicar tiempo a actividades productivas, tareas del hogar, estudios u otros proyectos, incluyendo descansos regulares.</p>
+          <p><strong>Alimentación:</strong> Preparación y consumo de snacks y comidas saludables. Es ideal hacer un meal prep para facilitar la alimentación durante la semana.</p>
+          <p><strong>Final y Recuperación:</strong> Mantenimiento de una rutina nocturna similar a los días con clases para asegurar un sueño de calidad.</p>
+        </div>
+      </details>
+      
+      <!-- Sección desplegable para Aspectos Transversales -->
+      <details>
+        <summary><strong>Aspectos Transversales</strong></summary>
+        <div class="details-content">
+          <p><strong>Alimentación:</strong> Realiza meal prep regularmente para garantizar opciones saludables a lo largo de la semana.</p>
+          <p><strong>Ejercicio:</strong> Integra pausas activas durante el día y, en días sin clases, sesiones de ejercicio más completas (por ejemplo, correr, yoga o entrenamiento funcional).</p>
+          <p><strong>Sueño:</strong> Mantén una rutina constante para dormir y despierta a la misma hora diariamente, incluso en días libres.</p>
+          <p><strong>Gestión del Tiempo:</strong> Utiliza una agenda o aplicaciones de gestión para organizar tus actividades, priorizando tareas y evitando la procrastinación.</p>
+        </div>
+      </details>
     </div>
+    
     <!-- Tab: Seguimiento -->
     <div id="seguimiento" class="tab-content">
       <h2>Seguimiento de Actividades</h2>
-      <p>Marca las actividades realizadas para que se reflejen en el calendario (para el día actual, si está visible en la semana):</p>
+      <p>Marca las actividades realizadas (para el día actual) y se reflejarán en el Calendario Semanal:</p>
       <table>
         <thead>
           <tr>
@@ -69,36 +76,37 @@
             <td><input type="checkbox" class="check-task" data-task="Inicio del trabajo a las 06:00 am" data-period="Mañana"></td>
           </tr>
           <tr>
-            <td>Realizar estiramientos y activación</td>
-            <td><input type="checkbox" class="check-task" data-task="Realizar estiramientos y activación" data-period="Mañana"></td>
+            <td>Estiramientos y activación</td>
+            <td><input type="checkbox" class="check-task" data-task="Estiramientos y activación" data-period="Mañana"></td>
           </tr>
           <tr>
             <td>Desayuno saludable</td>
             <td><input type="checkbox" class="check-task" data-task="Desayuno saludable" data-period="Mañana"></td>
           </tr>
           <tr>
-            <td>Asistencia a clases de 8:00 a 11:00 am</td>
-            <td><input type="checkbox" class="check-task" data-task="Asistencia a clases de 8:00 a 11:00 am" data-period="Mañana"></td>
+            <td>Asistencia a clases (8:00–11:00 am)</td>
+            <td><input type="checkbox" class="check-task" data-task="Asistencia a clases (8:00–11:00 am)" data-period="Mañana"></td>
           </tr>
           <tr>
-            <td>Breve pausa y merienda (11:00 – 12:00 pm)</td>
-            <td><input type="checkbox" class="check-task" data-task="Breve pausa y merienda (11:00 – 12:00 pm)" data-period="Mañana"></td>
+            <td>Breve pausa y merienda (11:00–12:00 pm)</td>
+            <td><input type="checkbox" class="check-task" data-task="Breve pausa y merienda (11:00–12:00 pm)" data-period="Mañana"></td>
           </tr>
           <tr>
-            <td>Organizar el turno laboral en bloques</td>
-            <td><input type="checkbox" class="check-task" data-task="Organizar el turno laboral en bloques" data-period="Tarde"></td>
+            <td>Organizar turno laboral en bloques</td>
+            <td><input type="checkbox" class="check-task" data-task="Organizar turno laboral en bloques" data-period="Tarde"></td>
           </tr>
           <tr>
-            <td>Realizar pausas activas y ejercicio corto</td>
-            <td><input type="checkbox" class="check-task" data-task="Realizar pausas activas y ejercicio corto" data-period="Tarde"></td>
+            <td>Pausas activas y ejercicio corto</td>
+            <td><input type="checkbox" class="check-task" data-task="Pausas activas y ejercicio corto" data-period="Tarde"></td>
           </tr>
           <tr>
-            <td>Rutina de desconexión y preparación para el sueño</td>
-            <td><input type="checkbox" class="check-task" data-task="Rutina de desconexión y preparación para el sueño" data-period="Noche"></td>
+            <td>Desconexión y preparación para dormir</td>
+            <td><input type="checkbox" class="check-task" data-task="Desconexión y preparación para dormir" data-period="Noche"></td>
           </tr>
         </tbody>
       </table>
     </div>
+    
     <!-- Tab: Calendario Semanal -->
     <div id="calendario" class="tab-content">
       <h2>Calendario Semanal</h2>
@@ -107,6 +115,8 @@
         <span id="currentWeekDisplay"></span>
         <button id="nextWeek">Semana Siguiente</button>
         <button id="completeWeek">Completar Semana</button>
+        <button id="uncompleteWeek" style="display:none;">Cancelar Completar Semana</button>
+        <button id="resetCalendar">Reiniciar Calendario</button>
       </div>
       <table id="calendarTable">
         <thead>
@@ -155,11 +165,13 @@
         </tbody>
       </table>
     </div>
+    
     <!-- Tab: Calendario Anual -->
     <div id="calendarioAnual" class="tab-content">
       <h2>Calendario Anual (Enero a Diciembre)</h2>
       <div id="yearCalendar"></div>
     </div>
+    
     <!-- Tab: Modificar Rutina -->
     <div id="modificar" class="tab-content">
       <h2>Modificar Rutina</h2>
