@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rutinas, Seguimiento y Calendario</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Rutinas, Seguimiento y Calendario</h1>
+  </header>
+  <div class="container">
+    <!-- Pestañas de navegación -->
+    <div class="tabs">
+      <button class="tab-button active" data-tab="planDiario">Plan Diario</button>
+      <button class="tab-button" data-tab="seguimiento">Seguimiento</button>
+      <button class="tab-button" data-tab="calendario">Calendario Semanal</button>
+      <button class="tab-button" data-tab="calendarioAnual">Calendario Anual</button>
+      <button class="tab-button" data-tab="modificar">Modificar Rutina</button>
+    </div>
+    
+    <!-- Tab: Plan Diario -->
+    <div id="planDiario" class="tab-content active">
+      <h2>Plan Diario</h2>
+      
+      <!-- Sección desplegable para Días con Clases -->
+      <details>
+        <summary><strong>Días con Clases (Lunes a Viernes)</strong></summary>
+        <div class="details-content">
+          <p><strong>Mañana Temprano (06:00 am):</strong> Inicio del trabajo, estiramientos, desayuno y planificación. Se recomienda realizar ejercicios de activación para despertar el cuerpo y la mente.</p>
+          <p><strong>Clases (8:00–11:00 am):</strong> Asistencia a clases y consumo de un snack ligero (por ejemplo, fruta o frutos secos) para mantener la energía.</p>
+          <p><strong>Transición (11:00–12:00 pm):</strong> Pausa breve y merienda para recargar energías. Es recomendable desconectar momentáneamente antes de retomar el trabajo.</p>
+          <p><strong>Turno (Desde 12:00 pm):</strong> Organización en bloques de tiempo (ej. Técnica Pomodoro) y realización de pausas activas para evitar la fatiga.</p>
+          <p><strong>Final y Recuperación:</strong> Desconexión del trabajo, preparación de un ambiente relajado y actividades de relajación (leer, meditar) para lograr un sueño reparador.</p>
+        </div>
+      </details>
+      
+      <!-- Sección desplegable para Días sin Clases -->
+      <details>
+        <summary><strong>Días sin Clases (Sábado/Domingo)</strong></summary>
+        <div class="details-content">
+          <p><strong>Mañana:</strong> Inicio con activación, un desayuno completo y, si es posible, una sesión corta de ejercicio (15–20 minutos).</p>
+          <p><strong>Jornada:</strong> Organización del día en bloques para dedicar tiempo a actividades productivas, tareas del hogar, estudios u otros proyectos, incluyendo descansos regulares.</p>
+          <p><strong>Alimentación:</strong> Preparación y consumo de snacks y comidas saludables. Es ideal hacer un meal prep para facilitar la alimentación durante la semana.</p>
+          <p><strong>Final y Recuperación:</strong> Mantenimiento de una rutina nocturna similar a los días con clases para asegurar un sueño de calidad.</p>
+        </div>
+      </details>
+      
+      <!-- Sección desplegable para Aspectos Transversales -->
+      <details>
+        <summary><strong>Aspectos Transversales</strong></summary>
+        <div class="details-content">
+          <p><strong>Alimentación:</strong> Realiza meal prep regularmente para garantizar opciones saludables a lo largo de la semana.</p>
+          <p><strong>Ejercicio:</strong> Integra pausas activas durante el día y, en días sin clases, sesiones de ejercicio más completas (por ejemplo, correr, yoga o entrenamiento funcional).</p>
+          <p><strong>Sueño:</strong> Mantén una rutina constante para dormir y despierta a la misma hora diariamente, incluso en días libres.</p>
+          <p><strong>Gestión del Tiempo:</strong> Utiliza una agenda o aplicaciones de gestión para organizar tus actividades, priorizando tareas y evitando la procrastinación.</p>
+        </div>
+      </details>
+    </div>
+    
+    <!-- Tab: Seguimiento -->
+    <div id="seguimiento" class="tab-content">
+      <h2>Seguimiento de Actividades</h2>
+      <p>Marca las actividades realizadas (para el día actual) y se reflejarán en el Calendario Semanal:</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Actividad</th>
+            <th>Cumplido</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Inicio del trabajo a las 06:00 am</td>
+            <td><input type="checkbox" class="check-task" data-task="Inicio del trabajo a las 06:00 am" data-period="Mañana"></td>
+          </tr>
+          <tr>
+            <td>Estiramientos y activación</td>
+            <td><input type="checkbox" class="check-task" data-task="Estiramientos y activación" data-period="Mañana"></td>
+          </tr>
+          <tr>
+            <td>Desayuno saludable</td>
+            <td><input type="checkbox" class="check-task" data-task="Desayuno saludable" data-period="Mañana"></td>
+          </tr>
+          <tr>
+            <td>Asistencia a clases (8:00–11:00 am)</td>
+            <td><input type="checkbox" class="check-task" data-task="Asistencia a clases (8:00–11:00 am)" data-period="Mañana"></td>
+          </tr>
+          <tr>
+            <td>Breve pausa y merienda (11:00–12:00 pm)</td>
+            <td><input type="checkbox" class="check-task" data-task="Breve pausa y merienda (11:00–12:00 pm)" data-period="Mañana"></td>
+          </tr>
+          <tr>
+            <td>Organizar turno laboral en bloques</td>
+            <td><input type="checkbox" class="check-task" data-task="Organizar turno laboral en bloques" data-period="Tarde"></td>
+          </tr>
+          <tr>
+            <td>Pausas activas y ejercicio corto</td>
+            <td><input type="checkbox" class="check-task" data-task="Pausas activas y ejercicio corto" data-period="Tarde"></td>
+          </tr>
+          <tr>
+            <td>Desconexión y preparación para dormir</td>
+            <td><input type="checkbox" class="check-task" data-task="Desconexión y preparación para dormir" data-period="Noche"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- Tab: Calendario Semanal -->
+    <div id="calendario" class="tab-content">
+      <h2>Calendario Semanal</h2>
+      <div id="weeklyNav">
+        <button id="prevWeek">Semana Anterior</button>
+        <span id="currentWeekDisplay"></span>
+        <button id="nextWeek">Semana Siguiente</button>
+        <button id="completeWeek">Completar Semana</button>
+        <button id="uncompleteWeek" style="display:none;">Cancelar Completar Semana</button>
+        <button id="resetCalendar">Reiniciar Calendario</button>
+      </div>
+      <table id="calendarTable">
+        <thead>
+          <tr>
+            <th>Periodo</th>
+            <th id="th-Lunes">Lunes</th>
+            <th id="th-Martes">Martes</th>
+            <th id="th-Miércoles">Miércoles</th>
+            <th id="th-Jueves">Jueves</th>
+            <th id="th-Viernes">Viernes</th>
+            <th id="th-Sábado">Sábado</th>
+            <th id="th-Domingo">Domingo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-period="Mañana">
+            <td>Mañana</td>
+            <td data-day="Lunes"></td>
+            <td data-day="Martes"></td>
+            <td data-day="Miércoles"></td>
+            <td data-day="Jueves"></td>
+            <td data-day="Viernes"></td>
+            <td data-day="Sábado"></td>
+            <td data-day="Domingo"></td>
+          </tr>
+          <tr data-period="Tarde">
+            <td>Tarde</td>
+            <td data-day="Lunes"></td>
+            <td data-day="Martes"></td>
+            <td data-day="Miércoles"></td>
+            <td data-day="Jueves"></td>
+            <td data-day="Viernes"></td>
+            <td data-day="Sábado"></td>
+            <td data-day="Domingo"></td>
+          </tr>
+          <tr data-period="Noche">
+            <td>Noche</td>
+            <td data-day="Lunes"></td>
+            <td data-day="Martes"></td>
+            <td data-day="Miércoles"></td>
+            <td data-day="Jueves"></td>
+            <td data-day="Viernes"></td>
+            <td data-day="Sábado"></td>
+            <td data-day="Domingo"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- Tab: Calendario Anual -->
+    <div id="calendarioAnual" class="tab-content">
+      <h2>Calendario Anual (Enero a Diciembre)</h2>
+      <div id="yearCalendar"></div>
+    </div>
+    
+    <!-- Tab: Modificar Rutina -->
+    <div id="modificar" class="tab-content">
+      <h2>Modificar Rutina</h2>
+      <form id="scheduleForm">
+        <div class="form-group">
+          <label for="daySelect">Día:</label>
+          <select id="daySelect" name="day" required>
+            <option value="">-- Selecciona el día --</option>
+            <option value="Lunes">Lunes</option>
+            <option value="Martes">Martes</option>
+            <option value="Miércoles">Miércoles</option>
+            <option value="Jueves">Jueves</option>
+            <option value="Viernes">Viernes</option>
+            <option value="Sábado">Sábado</option>
+            <option value="Domingo">Domingo</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="periodSelect">Período:</label>
+          <select id="periodSelect" name="period" required>
+            <option value="">-- Selecciona el período --</option>
+            <option value="Mañana">Mañana</option>
+            <option value="Tarde">Tarde</option>
+            <option value="Noche">Noche</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="activityInput">Actividad:</label>
+          <input type="text" id="activityInput" name="activity" placeholder="Ej: Desayuno saludable" required>
+        </div>
+        <button type="submit">Actualizar Calendario</button>
+      </form>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
