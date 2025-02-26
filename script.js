@@ -6,20 +6,18 @@ const tabContents = document.querySelectorAll('.tab-content');
 
 tabButtons.forEach(button => {
   button.addEventListener('click', () => {
-    // Remover clase "active" de todas las pestañas y sus contenidos
+    // Remover "active" de todas las pestañas y contenidos
     tabButtons.forEach(btn => btn.classList.remove('active'));
     tabContents.forEach(content => content.classList.remove('active'));
-
-    // Agregar clase "active" al botón clicado y mostrar su contenido
+    
+    // Activar la pestaña clicada y mostrar su contenido
     button.classList.add('active');
     const tabId = button.getAttribute('data-tab');
     document.getElementById(tabId).classList.add('active');
-
-    // Si se selecciona la pestaña "calendarioAnual", generar el calendario anual
+    
     if (tabId === "calendarioAnual") {
       generateYearCalendar();
     }
-    // Si se selecciona la pestaña "calendario" (semanal), renderizar la semana actual (o la seleccionada)
     if (tabId === "calendario") {
       renderWeeklyCalendar();
     }
@@ -27,22 +25,37 @@ tabButtons.forEach(button => {
 });
 
 // =====================
-// Variables globales para el Calendario Semanal
+// Variables globales y persistencia
 // =====================
+let currentWeekStart = getMonday(new Date()); // lunes de la semana actual
 
-// currentWeekStart guarda el lunes de la semana mostrada actualmente
-let currentWeekStart = getMonday(new Date());
-// weeklyTasks guarda las tareas por fecha y período
-// Ejemplo: weeklyTasks["2025-02-01"]["Mañana"] = ["Tarea 1", "Tarea 2"]
-let weeklyTasks = {};
-// completedWeeks es un arreglo que guarda los lunes (en formato ISO) de las semanas completadas
-let completedWeeks = [];
+// Recuperar datos de localStorage (si existen)
+let weeklyTasks = localStorage.getItem('weeklyTasks')
+  ? JSON.parse(localStorage.getItem('weeklyTasks'))
+  : {};
+let completedWeeks = localStorage.getItem('completedWeeks')
+  ? JSON.parse(localStorage.getItem('completedWeeks'))
+  : [];
+
+// Función para actualizar localStorage
+function updateLocalStorage() {
+  localStorage.setItem('weeklyTasks', JSON.stringify(weeklyTasks));
+  localStorage.setItem('completedWeeks', JSON.stringify(completedWeeks));
+}
 
 // =====================
 // Funciones de utilidad
 // =====================
 
-// Dada una fecha, devuelve el lunes de esa semana (asumiendo que la semana inicia el lunes)
+// Formatea una fecha en "YYYY-MM-DD"
+function formatDateISO(date) {
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+// Dada una fecha, devuelve el lunes de esa semana
 function getMonday(d) {
   const date = new Date(d);
   const day = date.getDay();
@@ -55,25 +68,23 @@ function getMonday(d) {
 // =====================
 function renderWeeklyCalendar() {
   const days = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
-
+  
   days.forEach((day, i) => {
     let currentDate = new Date(currentWeekStart);
     currentDate.setDate(currentDate.getDate() + i);
-    const dateISO = currentDate.toISOString().split('T')[0];
-
-    // Actualizar encabezado de la columna (se requiere un elemento con id="th-[NombreDelDia]")
+    const dateISO = formatDateISO(currentDate);
+    
+    // Actualizar encabezado
     const header = document.getElementById(`th-${day}`);
     if (header) {
       header.textContent = `${day} (${currentDate.getDate()}/${currentDate.getMonth() + 1})`;
     }
-
-    // Actualizar celdas de la columna (celdas con data-day="[NombreDelDia]")
+    
+    // Actualizar celdas
     const cells = document.querySelectorAll(`#calendarTable td[data-day="${day}"]`);
     cells.forEach(cell => {
       cell.setAttribute('data-date', dateISO);
-      cell.innerHTML = ""; // Limpiar contenido previo
-
-      // Obtener el período de la fila contenedora (atributo data-period en <tr>)
+      cell.innerHTML = "";
       const period = cell.parentElement.getAttribute('data-period');
       if (weeklyTasks[dateISO] && weeklyTasks[dateISO][period]) {
         weeklyTasks[dateISO][period].forEach(taskText => {
@@ -86,14 +97,25 @@ function renderWeeklyCalendar() {
       }
     });
   });
-
-  // Actualizar display de la semana (ejemplo: "Semana: 15/5 - 21/5")
+  
   const endDate = new Date(currentWeekStart);
   endDate.setDate(endDate.getDate() + 6);
   const weekDisplay = document.getElementById("currentWeekDisplay");
   if (weekDisplay) {
     weekDisplay.textContent = `Semana: ${currentWeekStart.getDate()}/${currentWeekStart.getMonth() + 1} - ${endDate.getDate()}/${endDate.getMonth() + 1}`;
   }
+  
+  // Mostrar u ocultar los botones de marcar/cancelar semana completada
+  const mondayISO = formatDateISO(currentWeekStart);
+  if (completedWeeks.includes(mondayISO)) {
+    document.getElementById("completeWeek").style.display = "none";
+    document.getElementById("uncompleteWeek").style.display = "inline-block";
+  } else {
+    document.getElementById("completeWeek").style.display = "inline-block";
+    document.getElementById("uncompleteWeek").style.display = "none";
+  }
+  
+  updateLocalStorage();
 }
 
 // =====================
@@ -112,38 +134,63 @@ document.getElementById("nextWeek").addEventListener("click", () => {
 // Marcar la semana como completada
 // =====================
 document.getElementById("completeWeek").addEventListener("click", () => {
-  const mondayISO = currentWeekStart.toISOString().split("T")[0];
+  const mondayISO = formatDateISO(currentWeekStart);
   if (!completedWeeks.includes(mondayISO)) {
     completedWeeks.push(mondayISO);
   }
   alert("Semana marcada como completada");
   renderWeeklyCalendar();
-  generateYearCalendar(); // Refresca el Calendario Anual
+  generateYearCalendar();
 });
 
-// Inicialmente, renderizamos la semana actual
+// =====================
+// Desmarcar (cancelar) la semana completada
+// =====================
+document.getElementById("uncompleteWeek").addEventListener("click", () => {
+  const mondayISO = formatDateISO(currentWeekStart);
+  const index = completedWeeks.indexOf(mondayISO);
+  if (index > -1) {
+    completedWeeks.splice(index, 1);
+  }
+  alert("Semana desmarcada");
+  renderWeeklyCalendar();
+  generateYearCalendar();
+});
+
+// =====================
+// Reiniciar el calendario (resetear todos los datos)
+// =====================
+document.getElementById("resetCalendar").addEventListener("click", () => {
+  if (confirm("¿Estás seguro de que deseas reiniciar el calendario? Se borrarán todas las tareas y semanas completadas.")) {
+    weeklyTasks = {};
+    completedWeeks = [];
+    updateLocalStorage();
+    renderWeeklyCalendar();
+    generateYearCalendar();
+    alert("Calendario reiniciado");
+  }
+});
+
+// Inicialmente, renderizar la semana actual
 renderWeeklyCalendar();
 
 // =====================
 // Seguimiento: marcar/desmarcar tareas
 // =====================
 const checkboxes = document.querySelectorAll('.check-task');
-
 checkboxes.forEach(checkbox => {
   checkbox.addEventListener('change', function() {
-    // Se utiliza la fecha de hoy para guardar la tarea
-    const todayISO = new Date().toISOString().split('T')[0];
+    const todayISO = formatDateISO(new Date());
     const period = this.getAttribute('data-period');
     const taskText = this.getAttribute('data-task');
-
-    // Inicializar la estructura si no existe para hoy y el período
+    
     if (!weeklyTasks[todayISO]) {
       weeklyTasks[todayISO] = {};
     }
     if (!weeklyTasks[todayISO][period]) {
       weeklyTasks[todayISO][period] = [];
     }
-
+    
     if (this.checked) {
       if (!weeklyTasks[todayISO][period].includes(taskText)) {
         weeklyTasks[todayISO][period].push(taskText);
@@ -154,21 +201,19 @@ checkboxes.forEach(checkbox => {
         weeklyTasks[todayISO][period].splice(index, 1);
       }
     }
-
-    // Actualizar la celda en el Calendario Semanal para la fecha de hoy y período
     updateCellForDatePeriod(todayISO, period);
-
-    // Opcional: marcar/desmarcar la fila en la tabla de seguimiento
+    
     const row = this.closest('tr');
     if (this.checked) {
       row.classList.add('completed');
     } else {
       row.classList.remove('completed');
     }
+    
+    updateLocalStorage();
   });
 });
 
-// Función que actualiza la celda del Calendario Semanal para una fecha y período dados
 function updateCellForDatePeriod(date, period) {
   const row = document.querySelector(`#calendarTable tr[data-period="${period}"]`);
   if (row) {
@@ -189,18 +234,16 @@ function updateCellForDatePeriod(date, period) {
 }
 
 // =====================
-// Modificar Rutina (Calendario Semanal) mediante formulario
+// Modificar Rutina mediante formulario
 // =====================
 const scheduleForm = document.getElementById('scheduleForm');
-
 scheduleForm.addEventListener('submit', function(e) {
   e.preventDefault();
-
+  
   const day = document.getElementById('daySelect').value;
   const period = document.getElementById('periodSelect').value;
   const activity = document.getElementById('activityInput').value;
-
-  // Mapeo de días para calcular el offset respecto al lunes de la semana mostrada
+  
   const dayMapping = {
     "Lunes": 0,
     "Martes": 1,
@@ -210,44 +253,43 @@ scheduleForm.addEventListener('submit', function(e) {
     "Sábado": 5,
     "Domingo": 6
   };
-
+  
   const offset = dayMapping[day];
   let targetDate = new Date(currentWeekStart);
   targetDate.setDate(targetDate.getDate() + offset);
-  const targetISO = targetDate.toISOString().split("T")[0];
-
-  // Inicializar la entrada si no existe para la fecha objetivo
+  const targetISO = formatDateISO(targetDate);
+  
   if (!weeklyTasks[targetISO]) {
     weeklyTasks[targetISO] = {};
   }
-  // Guardamos (o reemplazamos) la tarea en el período para esa fecha
+  // Reemplazar la(s) tarea(s) existente(s) para el período; para acumular, usa push
   weeklyTasks[targetISO][period] = [activity];
-
+  
   renderWeeklyCalendar();
   scheduleForm.reset();
+  updateLocalStorage();
 });
 
 // =====================
-// Generar Calendario Anual
+// Generar Calendario Anual (agrupado por semanas)
 // =====================
 function generateYearCalendar() {
   const container = document.getElementById('yearCalendar');
   container.innerHTML = "";
-
   const monthNames = [
     "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
     "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
   ];
   const currentYear = new Date().getFullYear();
-
+  
   for (let month = 0; month < 12; month++) {
     const monthDiv = document.createElement('div');
     monthDiv.className = "month-calendar";
-
+    
     const monthTitle = document.createElement('h3');
     monthTitle.textContent = monthNames[month];
     monthDiv.appendChild(monthTitle);
-
+    
     const table = document.createElement('table');
     const thead = document.createElement('thead');
     const trHead = document.createElement('tr');
@@ -259,35 +301,46 @@ function generateYearCalendar() {
     });
     thead.appendChild(trHead);
     table.appendChild(thead);
-
+    
     const tbody = document.createElement('tbody');
-    const firstDay = new Date(currentYear, month, 1).getDay();
+    const firstDayIndex = new Date(currentYear, month, 1).getDay();
     const daysInMonth = new Date(currentYear, month + 1, 0).getDate();
-
-    let date = 1;
-    for (let i = 0; i < 6; i++) {
+    
+    let startDate = 1 - firstDayIndex;
+    while (startDate <= daysInMonth) {
       const tr = document.createElement('tr');
-      for (let j = 0; j < 7; j++) {
+      let weekDates = [];
+      for (let i = 0; i < 7; i++) {
         const td = document.createElement('td');
-        if (i === 0 && j < firstDay) {
+        let d = startDate + i;
+        if (d < 1 || d > daysInMonth) {
           td.textContent = "";
-        } else if (date > daysInMonth) {
-          td.textContent = "";
+          weekDates.push(null);
         } else {
-          td.textContent = date;
-          const cellDate = new Date(currentYear, month, date);
-          const cellISO = cellDate.toISOString().split("T")[0];
+          td.textContent = d;
+          const cellDate = new Date(currentYear, month, d);
+          const cellISO = formatDateISO(cellDate);
           td.setAttribute("data-date", cellISO);
-          // Determinar el lunes de la semana de esta celda
-          const mondayOfCell = getMonday(cellDate).toISOString().split("T")[0];
-          if (completedWeeks.includes(mondayOfCell)) {
-            td.classList.add("completed-week");
-          }
-          date++;
+          weekDates.push(cellDate);
         }
         tr.appendChild(td);
       }
+      // Calcular el lunes de la semana (primer día válido)
+      let mondayOfWeek = null;
+      for (let d of weekDates) {
+        if (d !== null) {
+          mondayOfWeek = getMonday(d);
+          break;
+        }
+      }
+      if (mondayOfWeek) {
+        const mondayISO = formatDateISO(mondayOfWeek);
+        if (completedWeeks.includes(mondayISO)) {
+          tr.classList.add("completed-week");
+        }
+      }
       tbody.appendChild(tr);
+      startDate += 7;
     }
     table.appendChild(tbody);
     monthDiv.appendChild(table);
